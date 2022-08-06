@@ -1,11 +1,14 @@
 package io.github.humbertoluiz.parking.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import io.github.humbertoluiz.parking.exception.ParkingNotFoundException;
 import io.github.humbertoluiz.parking.model.Parking;
 import io.github.humbertoluiz.parking.repository.ParkingRepository;
 
@@ -21,5 +24,24 @@ public class ParkingService {
     @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     public List<Parking> findAll() {
         return parkingRepository.findAll();
+    }
+    
+    private static String getUUID() {
+        return UUID.randomUUID().toString().replace("-", "");
+    }
+    
+    @Transactional(readOnly = true)
+    public Parking findById(String id) {
+        return parkingRepository.findById(id).orElseThrow(() ->
+                new ParkingNotFoundException(id));
+    }
+
+    @Transactional
+    public Parking create(Parking parkingCreate) {
+        String uuid = getUUID();
+        parkingCreate.setId(uuid);
+        parkingCreate.setEntryDate(LocalDateTime.now());
+        parkingRepository.save(parkingCreate);
+        return parkingCreate;
     }
 }
