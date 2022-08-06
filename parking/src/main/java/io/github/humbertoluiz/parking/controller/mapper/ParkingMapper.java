@@ -13,7 +13,6 @@ import io.github.humbertoluiz.parking.model.Parking;
 @Component
 public class ParkingMapper {
 
-	
     private static final ModelMapper MODEL_MAPPER = new ModelMapper();
 
     public ParkingDTO toParkingDTO(Parking parking) {
@@ -23,7 +22,11 @@ public class ParkingMapper {
     public List<ParkingDTO> toParkingDTOList(List<Parking> parkingList) {
         return parkingList.stream().map(this::toParkingDTO).collect(Collectors.toList());
     }
-    
+
+    public Parking toParking(ParkingDTO dto) {
+        return MODEL_MAPPER.map(dto, Parking.class);
+    }
+
     public Parking toParkingCreate(ParkingCreateDTO dto) {
         return MODEL_MAPPER.map(dto, Parking.class);
     }
