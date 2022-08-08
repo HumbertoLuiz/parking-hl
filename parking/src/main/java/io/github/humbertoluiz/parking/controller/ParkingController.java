@@ -23,7 +23,7 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("/parking")
 @Api(tags = "Parking Controller")
 public class ParkingController {
-		
+
     private final ParkingService parkingService;
     private final ParkingMapper parkingMapper;
 
@@ -46,7 +46,13 @@ public class ParkingController {
         ParkingDTO result = parkingMapper.toParkingDTO(parking);
         return ResponseEntity.ok(result);
     }
-    
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity delete(@PathVariable String id) {
+        parkingService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
     @PostMapping
     public ResponseEntity<ParkingDTO> create(@RequestBody ParkingCreateDTO dto) {
         var parkingCreate = parkingMapper.toParkingCreate(dto);
@@ -54,17 +60,17 @@ public class ParkingController {
         var result = parkingMapper.toParkingDTO(parking);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
-    
+
     @PutMapping("/{id}")
     public ResponseEntity<ParkingDTO> update(@PathVariable String id, @RequestBody ParkingCreateDTO parkingCreteDTO) {
         Parking parkingUpdate = parkingMapper.toParkingCreate(parkingCreteDTO);
         Parking parking = parkingService.update(id, parkingUpdate);
         return ResponseEntity.ok(parkingMapper.toParkingDTO(parking));
     }
-    
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ParkingDTO> delete(@PathVariable String id) {
-        parkingService.delete(id);
-        return ResponseEntity.noContent().build();
+
+    @PostMapping("/{id}/exit")
+    public ResponseEntity<ParkingDTO> checkOut(@PathVariable String id) {
+        Parking parking = parkingService.checkOut(id);
+        return ResponseEntity.ok(parkingMapper.toParkingDTO(parking));
     }
 }

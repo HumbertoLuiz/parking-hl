@@ -2,10 +2,8 @@ package io.github.humbertoluiz.parking.controller.mapper;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
-
 import io.github.humbertoluiz.parking.controller.dto.ParkingCreateDTO;
 import io.github.humbertoluiz.parking.controller.dto.ParkingDTO;
 import io.github.humbertoluiz.parking.model.Parking;

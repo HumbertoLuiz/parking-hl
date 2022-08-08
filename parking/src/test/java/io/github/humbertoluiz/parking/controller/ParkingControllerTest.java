@@ -12,7 +12,7 @@ import io.github.humbertoluiz.parking.controller.dto.ParkingCreateDTO;
 import io.restassured.RestAssured;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class ParkingControllerTest {
+class ParkingControllerTest extends AbstractContainerBase {
 
     @LocalServerPort
     private int randomPort;
@@ -21,11 +21,11 @@ class ParkingControllerTest {
     public void setUpTest() {
         RestAssured.port = randomPort;
     }
-    
+
     @Test
     void whenFindAllThenCheckResult() {
         RestAssured.given()
-                .auth().basic("user", "Dio@123456")
+                //.auth().basic("user", "12345")
                 .when()
                 .get("/parking")
                 .then()
@@ -42,7 +42,7 @@ class ParkingControllerTest {
 
         RestAssured.given()
                 .when()
-                .auth().basic("user", "Dio@123456")
+                //.auth().basic("user", "12345")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(createDTO)
                 .post("/parking")
